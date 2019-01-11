@@ -17,15 +17,15 @@ namespace OopsReview
 
         //Data Members   
         private int _size;
-        private string _color;
-        private int _face;
+        private string _color; //Isn't necessary as it's stored in the property
+        private int _face; //Isn't necessary, but nice to have to keep track of data
 
         //Constructors
         public Die()
         {
-            _size = 1;
-            _color = "White";
-            _face = 1;
+            Size = 6;
+            Color = "White";
+            Face = 1;
         }
 
         public Die(int size, string color, int face)
@@ -44,9 +44,9 @@ namespace OopsReview
             }
             set
             {
-                if(value < 1)
+                if(value < 6 || value > 20)
                 {
-                    throw new Exception("Invalid dice size");
+                    throw new Exception("Invalid dice size. (Must be 6-20)");
                 }
                 _size = value;
             }
@@ -60,27 +60,39 @@ namespace OopsReview
             }
             set
             {
+                //(value == null) this will fail for an empty string
+                //(value == "") this will fail for a null value
+                //Could do (value == null || value == "")
+                if(string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))// Maybe have to type value.ToString()
+                {
+                    throw new Exception("Color has no value.");
+                }
                 _color = value;
             }
         }
 
-        public int Face
-        {
-            get
-            {
-                return _face;
-            }
-            set
-            {
-                if (value < 1)
-                {
-                    throw new Exception("Invalid face number");
-                }
-                _face = value;
-            }
-        }
+        //Auto Implimented propety
+        public int Face { get; set; }
+        //public int Face
+        //{
+        //    get
+        //    {
+        //        return _face;
+        //    }
+        //    set
+        //    {
+        //        if (value < 1 || value > Size)
+        //        {
+        //            throw new Exception("Invalid face number");
+        //        }
+        //        _face = value;
+        //    }
+        //}
 
         //Behaviours (methods)
-
+        public override string ToString()
+        {
+            return ("Size: " + Size + ", Color: " + Color + ", Face: " + Face);
+        }
     }
 }
