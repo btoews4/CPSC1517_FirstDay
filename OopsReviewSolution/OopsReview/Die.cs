@@ -15,40 +15,43 @@ namespace OopsReview
 
         //It's a dice, my dude
 
+        private static Random _random = new Random();
+
         //Data Members   
-        private int _size;
+        private int _sides;
         private string _color; //Isn't necessary as it's stored in the property
         private int _face; //Isn't necessary, but nice to have to keep track of data
 
         //Constructors
         public Die()
         {
-            Size = 6;
+            Sides = 6;
             Color = "White";
-            Face = 1;
+            Roll();
         }
 
-        public Die(int size, string color, int face)
+        public Die(int size, string color)
         {
-            Size = size;
+            Sides = size;
             Color = color;
-            Face = face;
+            Roll();
         }
 
         //Properties       
-        public int Size
+        public int Sides
         {
             get
             {
-                return _size;
+                return _sides;
             }
             set
             {
                 if(value < 6 || value > 20)
                 {
-                    throw new Exception("Invalid dice size. (Must be 6-20)");
+                    throw new Exception("Invalid Dice size. Must be 6-20");
                 }
-                _size = value;
+                _sides = value;
+                Roll();
             }
         }
 
@@ -72,7 +75,7 @@ namespace OopsReview
         }
 
         //Auto Implimented propety
-        public int Face { get; set; }
+        public int Face { get; private set; }
         //public int Face
         //{
         //    get
@@ -92,7 +95,29 @@ namespace OopsReview
         //Behaviours (methods)
         public override string ToString()
         {
-            return ("Size: " + Size + ", Color: " + Color + ", Face: " + Face);
+            return ("Size: " + Sides + ", Color: " + Color + ", Face: " + Face);
+        }
+
+        public void SetSides(int sides)
+        {
+            if (sides >= 6 && sides <= 20)
+            {
+                Sides = sides;
+            }
+            else
+            {
+                //optionally:
+                //a) throw a new exception
+                throw new Exception("Invalid value for die sides");
+                //b) set mSides to a default value
+                //Sides = 6;
+            }
+            Roll();
+        }
+
+        public void Roll()
+        {
+            Face = _random.Next(1, Sides + 1);
         }
     }
 }
